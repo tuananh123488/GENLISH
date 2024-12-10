@@ -32,7 +32,7 @@ const YeuCauRutTien = () => {
     useEffect(() => {
         api({ type: TypeHTTP.GET, sendToken: true, path: '/payment/get-withdraw-teacher' })
             .then(res => {
-                console.log(res)
+
                 let arr = []
                 res.forEach(item => {
                     if (!arr.map(item1 => item1.teacher._id).includes(item.provider._id)) {
@@ -115,15 +115,10 @@ const YeuCauRutTien = () => {
         api({ type: TypeHTTP.GET, path: '/user/get-all-teacher', sendToken: true })
             .then(res => {
                 setTeachers(res)
-
-
             })
 
     }, [])
-    useEffect(() => {
-        console.log(teachers);
 
-    })
     return (
         <div className="w-full max-h-[90%] mt-2 overflow-y-auto relative">
             <table className="w-full text-sm text-left rtl:text-right ">
@@ -182,8 +177,9 @@ const YeuCauRutTien = () => {
                             </td>
 
                             <td className="py-4" >
+
                                 {teachers
-                                    .filter(teacher => teacher.id === payment.teacher.id)
+                                    .filter(teacher => teacher._id === payment.teacher._id)
                                     .map((teacher, index) => (
 
                                         <span className="py-4" key={index}>
@@ -193,7 +189,7 @@ const YeuCauRutTien = () => {
                             </td>
                             <td className="py-4" >
                                 {teachers
-                                    .filter(teacher => teacher.id === payment.teacher.id)
+                                    .filter(teacher => teacher._id === payment.teacher._id)
                                     .map((teacher, index) => (
 
                                         <span className="py-4" key={index}>
@@ -203,7 +199,7 @@ const YeuCauRutTien = () => {
                             </td>
                             <td className="py-4" >
                                 {teachers
-                                    .filter(teacher => teacher.id === payment.teacher.id)
+                                    .filter(teacher => teacher._id === payment.teacher._id)
                                     .map((teacher, index) => (
 
                                         <span className="py-4" key={index}>
