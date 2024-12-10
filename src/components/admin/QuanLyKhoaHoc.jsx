@@ -121,27 +121,32 @@ const QuanLyKhoaHoc = () => {
                                     <span style={{ color: course.status === false ? 'black' : 'blue' }} className='text-[13px]'>{course.status === false ? 'Chưa phê duyệt' : 'Đã phê duyệt'}</span>
                                 </div>
                             </div>
-                            <div className='flex flex-col absolute right-[1rem] top-[50%] translate-y-[-50%] items-end'>
-                                <span className='text-[13px]'>{course.type === 'free' ? 'Miễn Phí' : 'Trả Phí'}</span>
-                                {course.type === 'pay' && (
-                                    <span className='text-[12px]'>by {course.price}</span>
-                                )}
-                                {course.status === false && (
-                                    <div className='flex items-center gap-1'>
-                                        <button onClick={() => handleDelete(course)} className='text-[13px] px-2 py-1 text-[white] rounded-md mt-1 bg-[red]'>
-                                            Xóa
-                                        </button>
-                                        <button onClick={() => handleAccept(course)} className='text-[13px] px-2 py-1 text-[white] rounded-md mt-1 bg-[blue]'>
-                                            Phê duyệt
-                                        </button>
-                                    </div>
-                                )}
+                            <div className='flex gap-5 absolute right-[1rem] top-[50%] translate-y-[-50%] items-end'>
+                                <div className='flex flex-col'>
+                                    <span className='text-[13px]'>{course.type === 'free' ? 'Miễn Phí' : 'Trả Phí'}</span>
+                                    {course.type === 'pay' && (
+                                        <span className='text-[12px]'>by {course.price}</span>
+                                    )}
+                                </div>
+                                <button onClick={() => handleDelete(course)} className='text-[13px] px-2 py-1 text-[white] rounded-md mt-1 bg-[red]'>
+                                    Xóa
+                                </button>
+                                {
+                                    course.status === false && (
+                                        <div className='flex items-center gap-1'>
+
+                                            <button onClick={() => handleAccept(course)} className='text-[13px] px-2 py-1 text-[white] rounded-md mt-1 bg-[blue]'>
+                                                Phê duyệt
+                                            </button>
+                                        </div>
+                                    )
+                                }
                             </div>
                         </div>
                     )
                 })}
 
-            </div>
+            </div >
             <div className='min-w-[100%] relative flex flex-col mt-[1rem] p-[1rem] gap-2 h-[95%] overflow-auto'>
                 <div onClick={() => {
                     setScreen(0)
@@ -156,7 +161,7 @@ const QuanLyKhoaHoc = () => {
                     </div>
                 )}
             </div>
-        </section>
+        </section >
     )
 }
 

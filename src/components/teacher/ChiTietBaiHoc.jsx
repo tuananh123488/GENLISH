@@ -1,3 +1,4 @@
+import { authContext } from '@/context/AuthContext'
 import { notifyContext, notifyType } from '@/context/NotifyContext'
 import { api, TypeHTTP } from '@/utils/api'
 import { apiKey } from '@/utils/apikey'
@@ -11,8 +12,10 @@ const ChiTietBaiHoc = ({ course, setCurrentCourse }) => {
     const [url, setUrl] = useState('')
     const { notifyHandler } = useContext(notifyContext)
     const [courseDetails, setCourseDetails] = useState([])
-
+    const { authData } = useContext(authContext)
     useEffect(() => {
+        console.log(course);
+
         if (course) {
             api({ type: TypeHTTP.GET, sendToken: true, path: `/coursedetail/get-by-course/${course._id}` })
                 .then(details => {
@@ -28,11 +31,28 @@ const ChiTietBaiHoc = ({ course, setCurrentCourse }) => {
             .then(res => {
                 const duration = convertISODurationToSeconds(res.data.items[0].contentDetails.duration)
                 api({ type: TypeHTTP.POST, sendToken: true, body: { title, url: videoId, course_id: course._id, duration }, path: '/coursedetail/create' })
-                    .then(course => {
+                    .then(course1 => {
                         notifyHandler.notify(notifyType.SUCCESS, 'Tạo Bài Học Thành Công')
-                        setCourseDetails([...courseDetails, course])
+                        setCourseDetails([...courseDetails, course1])
                         setTitle('')
                         setUrl('')
+
+                        const body1 = {
+                            toUser: {
+                                _id: 'admin',
+                                fullName: 'admin',
+                                avatar: 'admin'
+                            },
+                            fromUser: {
+                                _id: authData.user._id,
+                                fullName: authData.user.fullName,
+                                avatar: authData.user.avatar
+                            },
+                            content: `${authData.user.fullName} vừa đăng thêm một bài học mới "${url}" trong khóa học ${course.title} `,
+                            type: 'notify'
+                        }
+                        api({ type: TypeHTTP.POST, sendToken: false, path: '/notification/save', body: body1 })
+
                     })
             })
     }

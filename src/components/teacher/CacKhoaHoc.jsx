@@ -52,35 +52,6 @@ const CacKhoaHoc = () => {
                     </div>
                     {loading === false ? (
                         <>
-                            {/* {courses.length >= 0 && (
-                                <div className='w-full flex flex-col mt-[1rem] pb-[1rem] gap-2 h-[100%]'>
-
-                                    <div className='w-full grid grid-cols-4 gap-3 py-[0.5rem] px-[0.5rem] max-h-[100%] overflow-y-auto'>
-                                        {courses.map((course, index) => (
-                                            <div onClick={() => setCurrentCourse(course)} className='transition-all hover:scale-[1.05] cursor-pointer flex flex-col w-[full] pb-2 shadow-md rounded-xl' key={index}>
-                                                <img src={course.image} width={'100%'} className='rounded-t-xl' />
-                                                <div className='flex items-center pr-[0.5rem]'>
-                                                    <span className='font-medium text-[15px] w-full px-3 mt-2'>{course.title}</span>
-                                                    <button onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleRemoveCourse(course._id);
-                                                    }} className="fa-solid fa-trash translate-y-[5px] text-[30px] text-[#9e9e9e]"></button>
-                                                </div>
-                                                <span className={`font-semibold text-[14px] text-[#5dade2] mt-1 w-full px-3`}>{course.type === 'free' ? 'Miễn Phí' : `${formatMoney(course.price)} đ`}</span>
-                                                <div className='flex gap-1 relative items-center px-2 mt-1'>
-                                                    <span style={{ color: course.status === true ? '#07ae4e' : 'black' }} className='text-[13px] px-1'>{course.status === true ? 'Đã phê duyệt' : 'Chưa phê duyệt'}</span>
-                                                    <span className='absolute flex items-center gap-1 text-[#4d4d4d] text-[13px] right-3 top-[50%] translate-y-[-50%]'>
-                                                        <i className='bx bx-time-five translate-y-[1px]'></i>
-                                                        {convertSecondsToReadableFormat(
-                                                            course.list_course.reduce((total, item) => total + item.duration, 0)
-                                                        )}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )} */}
                             {courses.length > 0 ? (
                                 <div className='w-full flex flex-col mt-[1rem] pb-[1rem] gap-2 h-[100%]'>
                                     <div className='w-full grid grid-cols-4 gap-3 py-[0.5rem] px-[0.5rem] max-h-[100%] overflow-y-auto'>

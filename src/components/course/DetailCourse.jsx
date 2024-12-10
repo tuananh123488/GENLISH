@@ -96,6 +96,9 @@ const DetailCourse = ({ course, setStudy, setPayment, handleAccept, handleDelete
                         <div key={index} className='h-[50px] relative rounded-lg bg-[#fafaff] px-[1rem] gap-2 flex items-center'>
                             <i style={{ color: mainColor }} className='bx bx-play'></i>
                             <span className='text-[14px]'>{index + 1}. {item.title}</span>
+                            <>
+                                {pathname !== '/admin' ? null : `https://www.youtube.com/watch?v=${item.url}`}
+                            </>
                             <span className='text-[12px] absolute right-4 top-[50%] translate-y-[-50%]'>{convertSecondsToTimeFormat(item.duration)}</span>
                         </div>
                     ))}
