@@ -30,9 +30,13 @@ const CacKhoaHoc = () => {
 
     const handleRemoveCourse = (id) => {
         notifyHandler.notify(notifyType.LOADING, 'Đang Xóa Khóa Học')
+
         api({ type: TypeHTTP.DELETE, sendToken: true, path: `/course/delete/${id}` })
             .then(res => {
-                setCourses(prev => prev._id !== id)
+                setCourses(prev => prev.filter(course => course._id !== id));
+
+                console.log(courses);
+
                 notifyHandler.notify(notifyType.SUCCESS, 'Xóa Khóa Học Thành Công')
             })
     }
@@ -42,14 +46,15 @@ const CacKhoaHoc = () => {
         <div className='w-full flex h-full'>
             <div style={{ transition: '0.5s', marginLeft: currentCourse ? '-100%' : 0 }} className='w-[100%] flex'>
                 <div className='min-w-[100%] px-[1rem]'>
+                    <div className='flex items-center justify-between my-2'>
+                        <span className='font-semibold text-[18px]'>Các Khóa Học Của {authData.user?.fullName}</span>
+                        <button onClick={() => { formHandler.showThemKhoaHoc() }} className="text-center bg-[#149dff] transition-all hover:scale-[1.06] text-[white] font-semibold text-[14px] w-[140px] py-[7px] rounded-lg">Thêm khóa học</button>
+                    </div>
                     {loading === false ? (
                         <>
-                            {courses.length >= 0 && (
+                            {/* {courses.length >= 0 && (
                                 <div className='w-full flex flex-col mt-[1rem] pb-[1rem] gap-2 h-[100%]'>
-                                    <div className='flex items-center justify-between'>
-                                        <span className='font-semibold text-[18px]'>Các Khóa Học Của {authData.user?.fullName}</span>
-                                        <button onClick={() => { formHandler.showThemKhoaHoc() }} className="text-center bg-[#149dff] transition-all hover:scale-[1.06] text-[white] font-semibold text-[14px] w-[140px] py-[7px] rounded-lg">Thêm khóa học</button>
-                                    </div>
+
                                     <div className='w-full grid grid-cols-4 gap-3 py-[0.5rem] px-[0.5rem] max-h-[100%] overflow-y-auto'>
                                         {courses.map((course, index) => (
                                             <div onClick={() => setCurrentCourse(course)} className='transition-all hover:scale-[1.05] cursor-pointer flex flex-col w-[full] pb-2 shadow-md rounded-xl' key={index}>
@@ -75,7 +80,44 @@ const CacKhoaHoc = () => {
                                         ))}
                                     </div>
                                 </div>
+                            )} */}
+                            {courses.length > 0 ? (
+                                <div className='w-full flex flex-col mt-[1rem] pb-[1rem] gap-2 h-[100%]'>
+                                    <div className='w-full grid grid-cols-4 gap-3 py-[0.5rem] px-[0.5rem] max-h-[100%] overflow-y-auto'>
+                                        {courses.map((course, index) => (
+                                            <div onClick={() => setCurrentCourse(course)} className='transition-all hover:scale-[1.05] cursor-pointer flex flex-col w-[full] pb-2 shadow-md rounded-xl' key={index}>
+                                                <img src={course.image} width={'100%'} className='rounded-t-xl' />
+                                                <div className='flex items-center pr-[0.5rem]'>
+                                                    <span className='font-medium text-[15px] w-full px-3 mt-2'>{course.title}</span>
+                                                    <button onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleRemoveCourse(course._id);
+                                                    }} className="fa-solid fa-trash translate-y-[5px] text-[30px] text-[#9e9e9e]"></button>
+                                                </div>
+                                                <span className={`font-semibold text-[14px] text-[#5dade2] mt-1 w-full px-3`}>
+                                                    {course.type === 'free' ? 'Miễn Phí' : `${formatMoney(course.price)} đ`}
+                                                </span>
+                                                <div className='flex gap-1 relative items-center px-2 mt-1'>
+                                                    <span style={{ color: course.status ? '#07ae4e' : 'black' }} className='text-[13px] px-1'>
+                                                        {course.status ? 'Đã phê duyệt' : 'Chưa phê duyệt'}
+                                                    </span>
+                                                    <span className='absolute flex items-center gap-1 text-[#4d4d4d] text-[13px] right-3 top-[50%] translate-y-[-50%]'>
+                                                        <i className='bx bx-time-five translate-y-[1px]'></i>
+                                                        {convertSecondsToReadableFormat(
+                                                            course.list_course.reduce((total, item) => total + item.duration, 0)
+                                                        )}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className='w-full flex flex-col items-center justify-center mt-[1rem] pb-[1rem] h-[100%]'>
+                                    <p className='text-[20px] text-gray-500'>Bạn chưa có khóa học nào!</p>
+                                </div>
                             )}
+
                         </>
                     ) : (
                         <div role="status" className='flex flex-col items-center gap-2 absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]'>
